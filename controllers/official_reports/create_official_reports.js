@@ -1,4 +1,4 @@
-const { Official_reports, Academic_years } = require("../../models");
+const { Official_reports, Academic_years, precenses } = require("../../models");
 
 const createReport = async (req, res, next) => {
   try {
@@ -13,6 +13,40 @@ const createReport = async (req, res, next) => {
       date,
       time,
     });
+
+    const response = await Official_reports.findOne({
+      where: { id: create.id },
+      include: [
+        {
+          model: Academic_years,
+          as: "academic_year",
+          attributes: ["id", "name", "status"],
+          where: { status: true },
+        },
+        {
+          model: learning_activity_id,
+          as: "learning_activity",
+          attributes: ["id", "name", "description", "date", "time"],
+          include: [
+            {
+              model: studies,
+              as: "study",
+              attributes: ["id", "name", "description"],
+            },
+            {
+
+            }
+          ],
+        },
+      ],
+    });
+
+    
+
+    const insertStudents = await precenses.create({
+      official_report_id: create.id,
+      
+    })
 
     return res.status(201).json({
       jsonapi: {

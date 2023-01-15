@@ -30,14 +30,20 @@ const login = async (req, res, next) => {
       thumbnail: user.thumbnail,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1h" });
+    const token_access = jwt.sign(payload, JWT_SECRET_KEY, {
+      expiresIn: "10m",
+    });
+    const token_refresh = jwt.sign(payload, JWT_SECRET_KEY, {
+      expiresIn: "1d",
+    });
 
     return res.status(200).json({
       status: true,
       message: "login success!",
       data: {
         username: username,
-        token: token,
+        token_access: token_access,
+        token_refresh: token_refresh,
       },
     });
   } catch (error) {
