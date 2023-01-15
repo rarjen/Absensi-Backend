@@ -2,6 +2,7 @@ const { Users } = require("../../models");
 const jwt = require("jsonwebtoken");
 const Validator = require("fastest-validator");
 const v = new Validator();
+const bcrypt = require("bcrypt");
 const { JWT_SECRET_KEY } = process.env;
 
 const login = async (req, res, next) => {
@@ -12,7 +13,7 @@ const login = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({
         status: false,
-        message: "Wrong email or password!",
+        message: "Wrong username or password!",
       });
     }
 
@@ -20,7 +21,7 @@ const login = async (req, res, next) => {
     if (!match) {
       return res.status(400).json({
         status: false,
-        message: "Wrong email or password!",
+        message: "Wrong username or password!",
         data: null,
       });
     }
