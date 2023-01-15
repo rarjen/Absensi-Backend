@@ -10,3 +10,5 @@ router.get("/", (req, res) => {
 });
 
 router.use("/auth", auth);
+
+module.exports = router;
