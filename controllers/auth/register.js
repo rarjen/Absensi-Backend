@@ -8,14 +8,12 @@ const register = async (req, res, next) => {
     const { username, password, thumbnail } = req.body;
 
     const schema = {
-      username: { type: "string" },
       password: { type: "string", min: 6 },
     };
 
     const check = await v.compile(schema);
 
     const validate = check({
-      email: `${email}`,
       password: `${password}`,
     });
 
