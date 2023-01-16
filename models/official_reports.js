@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "official_report_id",
         as: "presence",
       });
+
+      Official_reports.belongsTo(models.Learning_activities, {
+        foreignKey: "id",
+        as: "activity",
+      });
+
       Official_reports.belongsTo(models.Academic_years, {
         foreignKey: "academic_year_id",
         as: "year",

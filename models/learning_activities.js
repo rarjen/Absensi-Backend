@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "study",
       });
 
+      Learning_activities.hasMany(models.Official_reports, {
+        foreignKey: "learning_activity_id",
+        as: "activity",
+      });
+
       Learning_activities.belongsTo(models.Teachers, {
         foreignKey: "teacher_id",
         as: "teacher",
