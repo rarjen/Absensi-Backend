@@ -8,7 +8,7 @@ function authorize(roles = []) {
   return [
     (req, res, next) => {
       try {
-        const token = req.headers["authorization"].split(" ")[1];
+        const token = req.headers["authorization"];
 
         if (!token) {
           return res.status(401).json({
@@ -18,7 +18,9 @@ function authorize(roles = []) {
           });
         }
 
-        const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const bearerToken = token.split(" ")[1];
+
+        const user = jwt.verify(bearerToken, process.env.JWT_SECRET_KEY);
 
         if (roles.length > 0) {
           const valid = roles.find((r) => r == user.role);

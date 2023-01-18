@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 
 const createAcademicYear = async (req, res, next) => {
   try {
-    const { year, semester, status } = req.body;
+    const { year, semester, status = 0 } = req.body;
 
     if (!year && !semester && !status) {
       return res.status(400).json({
@@ -19,7 +19,7 @@ const createAcademicYear = async (req, res, next) => {
       });
     }
 
-    const exist = await Flight.findOne({
+    const exist = await Academic_years.findOne({
       where: {
         [Op.and]: [{ year }, { semester }],
       },

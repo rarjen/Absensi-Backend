@@ -20,7 +20,7 @@ const updateAcademicYear = async (req, res, next) => {
       },
       status: 200,
       message: "Data berhasil di update",
-      data: updated,
+      data: updated
     });
   } catch (error) {
     next(error);
