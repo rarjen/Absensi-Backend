@@ -1,10 +1,10 @@
-const { Classes } = require("../../models");
+const { Studies } = require("../../models");
 
-const create = async (req, res, next) => {
+const update = async (req, res, next) => {
   try {
-    const { name } = req.body;
-
-    const exist = await Classes.findOne({ where: { name } });
+    const { id } = req.params;
+    const { name, class_id } = req.body;
+    const exist = await Studies.findOne({ where: { name, class_id } });
     if (exist) {
       return res.status(409).json({
         jsonapi: {
@@ -15,15 +15,12 @@ const create = async (req, res, next) => {
           copyright: "2022 ~ BE JavaScript Binar Academy",
         },
         status: 409,
-        message: "Data Sudah Ada",
+        message: "Data duplikat",
       });
     }
 
-    const classes = await Classes.create({
-      name,
-    });
-
-    return res.status(201).json({
+    const updated = await Studies.update({ name, class_id }, { where: { id } });
+    return res.status(200).json({
       jsonapi: {
         version: "1.0",
       },
@@ -32,12 +29,11 @@ const create = async (req, res, next) => {
         copyright: "2022 ~ BE JavaScript Binar Academy",
       },
       status: 201,
-      message: "Data berhasil ditambahkan",
-      data: classes,
+      message: "Data berhasil diubah",
     });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = create;
+module.exports = update;

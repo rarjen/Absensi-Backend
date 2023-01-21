@@ -1,6 +1,6 @@
 const { Studies, Classes } = require("../../models");
 
-const show = async (req, res, next) => {
+const show = async (_req, res, next) => {
   try {
     const studies = await Studies.findAll({
       include: [
@@ -21,7 +21,7 @@ const show = async (req, res, next) => {
           copyright: "2022 ~ BE JavaScript Binar Academy",
         },
         status: 400,
-        message: "Data Class Kosong",
+        message: "Data mata pelajaran tidak ada",
       });
     }
 

@@ -1,10 +1,12 @@
-const { Classes } = require("../../models");
+const { Learning_activities } = require("../../models");
 
 const create = async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { study_id, teacher_id, status = 1 } = req.body;
 
-    const exist = await Classes.findOne({ where: { name } });
+    const exist = await Learning_activities.findOne({
+      where: { study_id, teacher_id },
+    });
     if (exist) {
       return res.status(409).json({
         jsonapi: {
@@ -19,8 +21,10 @@ const create = async (req, res, next) => {
       });
     }
 
-    const classes = await Classes.create({
-      name,
+    const response = await Learning_activities.create({
+      study_id,
+      teacher_id,
+      status,
     });
 
     return res.status(201).json({
@@ -33,7 +37,7 @@ const create = async (req, res, next) => {
       },
       status: 201,
       message: "Data berhasil ditambahkan",
-      data: classes,
+      data: response,
     });
   } catch (error) {
     next(error);

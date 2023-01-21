@@ -1,10 +1,16 @@
-const { Classes } = require("../../models");
+const { Studies } = require("../../models");
+const { Op } = require("sequelize");
 
 const create = async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { name, class_id } = req.body;
 
-    const exist = await Classes.findOne({ where: { name } });
+    const exist = await Studies.findOne({
+      where: {
+        [Op.and]: [{ name }, { class_id }],
+      },
+    });
+
     if (exist) {
       return res.status(409).json({
         jsonapi: {
@@ -19,8 +25,9 @@ const create = async (req, res, next) => {
       });
     }
 
-    const classes = await Classes.create({
+    const create = await Studies.create({
       name,
+      class_id,
     });
 
     return res.status(201).json({
@@ -33,7 +40,7 @@ const create = async (req, res, next) => {
       },
       status: 201,
       message: "Data berhasil ditambahkan",
-      data: classes,
+      data: create,
     });
   } catch (error) {
     next(error);

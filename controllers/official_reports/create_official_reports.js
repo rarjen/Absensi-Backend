@@ -1,37 +1,42 @@
-const { Official_reports, Academic_years, Learning_activities, Studies, Classes, Students } = require("../../models");
+const {
+  Official_reports,
+  Academic_years,
+  Learning_activities,
+  Studies,
+  Classes,
+  Students,
+} = require("../../models");
 
 const createReport = async (req, res, next) => {
   try {
     const { learning_activity_id, description, date, time } = req.body;
-    const response = await Official_reports.findAll(
-      {
-        include: [
-          {
-            model: Learning_activities,
-            as: "activity",
-            attributes: ["id", "study_id", "teacher_id", "status"],
-            include: [
-              {
-                model: Studies,
-                as: 'study',
-                include: [
-                  {
-                    model: Classes,
-                    as: 'class',
-                    include: [
-                      {
-                        model: Students,
-                        as: 'student'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-        ],
-      }
-    );
+    const response = await Official_reports.findAll({
+      include: [
+        {
+          model: Learning_activities,
+          as: "activity",
+          attributes: ["id", "study_id", "teacher_id", "status"],
+          include: [
+            {
+              model: Studies,
+              as: "study",
+              include: [
+                {
+                  model: Classes,
+                  as: "class",
+                  include: [
+                    {
+                      model: Students,
+                      as: "student",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
     console.log(response);
     return res.json(response);
     // const active = await Academic_years.findOne({ where: { status: true } });
@@ -43,8 +48,6 @@ const createReport = async (req, res, next) => {
     //   date,
     //   time,
     // });
-    
-
 
     // return res.status(201).json({
     //   jsonapi: {

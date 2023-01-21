@@ -1,14 +1,18 @@
-const { Teachers } = require("../../models");
+const { Teachers, Users } = require("../../models");
 
 const create = async (req, res, next) => {
   try {
     const user = req.user;
-    const { name, address } = req.body;
+    const { username, password, name, address } = req.body;
+
+    const me = await Users.create({
+      username, password
+    });
 
     const teacher = await Teachers.create({
-      user_id: user.id,
+      user_id: me.id,
       name,
-      address,
+      address
     });
 
     return res.status(201).json({

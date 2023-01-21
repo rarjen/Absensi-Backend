@@ -2,16 +2,17 @@ const { Users, Teachers } = require("../../models");
 
 const show = async (req, res, next) => {
   try {
-    const user = req.user;
-    const showTeachers = await Users.findOne({
-      where: { id: user.id },
+    
+    const data = await Users.findAll({
       include: [
         {
           model: Teachers,
-          as: "teacher",
-        },
-      ],
+          as: 'teacher'
+        }
+      ]
     });
+
+
     return res.status(200).json({
       jsonapi: {
         version: "1.0",
@@ -22,14 +23,7 @@ const show = async (req, res, next) => {
       },
       status: 200,
       message: "Data berhasil ditampilkan",
-      data: {
-        user_id: user.id,
-        username: showTeachers.username,
-        thumbnail: showTeachers.thumbnail,
-        teacher_id: showTeachers.teacher.id,
-        name: showTeachers.teacher.name,
-        address: showTeachers.teacher.address,
-      },
+      data: data,
     });
   } catch (error) {
     next(error);

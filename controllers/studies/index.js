@@ -1,3 +1,4 @@
 const show = require("./show");
-
-module.exports = { show };
+const create = require('./create');
+const update = require('./update');
+module.exports = { show, create, update};
